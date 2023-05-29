@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: userauth-depl
+spec:
+  replicas: 1
+  selector: 
+    matchLabels:
+      app: userauthenticationservice
+  template:
+    metadata:
+      labels:
+        app: userauthenticationservice
+    spec:
+      containers:
+        - name:  userauthenticationservice
+          image: harminu/userauthentication:latest
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: userauth-clusterip-srv
+spec:
+  type: ClusterIP
+  selector:
+    app: userauthenticationservice
+  ports:
+    - name: userauthenticationservice
+      protocol: TCP
+      port: 80
+      targetPort: 80
